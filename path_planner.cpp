@@ -1,7 +1,3 @@
-/* DstarDraw.cpp
- * James Neufeld (neufeld@cs.ualberta.ca)
- */
-
 #ifdef MACOS
 #include <OpenGL/gl.h>
 #include <OpenGL/glu.h>
@@ -27,11 +23,13 @@ int hh, ww;
 int window; 
 Dstar *dstar;
 
-int scale = 6;
+int scale = 4; //6
 int mbutton = 0;
 int mstate = 0;
 
 bool b_autoreplan = true;
+
+Mat streets;
 
 void InitGL(int Width, int Height)
 {
@@ -62,6 +60,31 @@ void ReSizeGLScene(int Width, int Height)
 
 }
 
+void drawStreets()
+{
+  glEnable (GL_BLEND);
+glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glBegin(GL_QUADS);
+    for(int i=0;i<streets.cols;i++)
+      for(int j=0;j<streets.rows;j++)
+      {
+        Vec3b color=streets.at<Vec3b>(j,i);
+        glColor4f(color[0]/255.0,color[1]/255.0,color[2]/255.0,0.4);
+        printf("%f %f %f\n",color[0]/255.0,color[1]/255.0,color[2]/255.0);
+        float x = i;
+        float y = j;
+        
+        float size=0.45;
+        glVertex2f(x - size, y - size);
+        glVertex2f(x + size, y - size);
+        glVertex2f(x + size, y + size);
+        glVertex2f(x - size, y + size);
+
+      }
+  glEnd();
+  glDisable (GL_BLEND);
+}
+
 void DrawGLScene()
 {
 
@@ -74,6 +97,8 @@ void DrawGLScene()
   glScaled(scale,scale,1);
 
   //if (b_autoreplan) {dstar->replan();dstar->getWaypoints();}
+
+  drawStreets();
 
   dstar->draw();
   dstar->drawWaypoints();
@@ -188,6 +213,8 @@ void loadLte(string filename)
 {
   Mat lte=imread(filename,0);  
   resize(lte,lte,Size(800/scale,600/scale));
+    flip(lte,lte,1);
+
 //imshow("build",buildings); cvWaitKey(0);
   for(int i=0;i<lte.cols;i++)
       for(int j=0;j<lte.rows;j++)
@@ -207,6 +234,16 @@ void loadLte(string filename)
   }
   }
 }
+
+void loadStreets(string filename)
+{
+  streets=imread(filename,1);  
+  resize(streets,streets,Size(800/scale,600/scale));
+    flip(streets,streets,1);
+
+}
+
+
 
 int main(int argc, char **argv) {
 
@@ -236,6 +273,8 @@ int main(int argc, char **argv) {
   dstar = new Dstar();
   dstar->init(30,50,120, 90);
   
+  if(argc>3) 
+    loadStreets(argv[3]);
   if(argc>2)
   	loadLte(argv[2]);
 

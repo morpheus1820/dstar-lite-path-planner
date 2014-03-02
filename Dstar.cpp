@@ -1,7 +1,3 @@
-/* Dstar.cpp
- * James Neufeld (neufeld@cs.ualberta.ca)
- */
-
 #include "Dstar.h"
 
 #ifdef USE_OPEN_GL
@@ -615,8 +611,8 @@ void Dstar::draw() {
     if (iter->second.cost == -2) glColor3f(0,0,0.4);
     else 
     	if (iter->second.cost < 0 ) glColor3f(1,0,0);
-    else 
-    	glColor3f(0,0,1.0-iter->second.cost);
+    //else 
+    //	glColor3f(0,0,1.0-iter->second.cost);
     drawCell(iter->first,0.45);
   }
 
@@ -625,10 +621,10 @@ void Dstar::draw() {
   glColor3f(1,0,1);
   drawCell(s_goal,0.45);
 
-  for(iter1=openHash.begin(); iter1 != openHash.end(); iter1++) {
-    glColor3f(0.4,0,0.8);
-    drawCell(iter1->first, 0.2);
-  }
+  // for(iter1=openHash.begin(); iter1 != openHash.end(); iter1++) {
+
+  //   drawCell(iter1->first, 0.2);
+  // }
 
   
   glEnd();
@@ -730,7 +726,7 @@ void Dstar::drawCell(state s, float size) {
   
   
   glVertex2f(x - size, y - size);
-  glVertex2f(x + size, y - size);
+  glVertex2f(x + size, y - size); 
   glVertex2f(x + size, y + size);
   glVertex2f(x - size, y + size);
 

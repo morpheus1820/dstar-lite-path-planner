@@ -1,11 +1,9 @@
-/* Dstar.h
- * James Neufeld (neufeld@cs.ualberta.ca)
- */
-
 #ifndef DSTAR_H
 #define DSTAR_H
 
-//#include <math.h>
+#ifndef MACOS
+#include <cmath>
+#endif
 #include <cstdlib>
 #include <stack>
 #include <queue>

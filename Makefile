@@ -5,15 +5,15 @@ LIBS= -framework OpenGL -framework GLUT -lm -L/usr/local/lib `pkg-config --libs 
 
 UNAME= $(shell uname)
 ifeq ($(UNAME), Linux)
-LIBS= -lGL -lGLU -lglut
+LIBS= -lGL -lGLU -lglut `pkg-config --libs opencv`
 DEFS= -D USE_OPEN_GL
 endif
 
 
-all:dstar
+all:path_planner
 
-dstar: Dstar.h Dstar.cpp DstarDraw.cpp
-	g++ ${FLAGS} Dstar.cpp DstarDraw.cpp -o dstar ${LIBS} ${DEFS}
+path_planner: Dstar.h Dstar.cpp path_planner.cpp
+	g++ ${FLAGS} Dstar.cpp path_planner.cpp -o path_planner ${LIBS} ${DEFS}
 
 clean:
 	rm -f dstar
