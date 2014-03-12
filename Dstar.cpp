@@ -465,6 +465,8 @@ void Dstar::updateStart(int x, int y) {
 
   s_start = calculateKey(s_start);
   s_last  = s_start;
+
+  printf("update start %d %d\n",x,y);
   
 }
 
@@ -479,6 +481,8 @@ void Dstar::updateStart(int x, int y) {
  */
 void Dstar::updateGoal(int x, int y) {
    
+     printf("update goal %d %d\n",x,y);
+
   list< pair<ipoint2, double> > toAdd;
   pair<ipoint2, double> tp;
   
@@ -608,12 +612,13 @@ void Dstar::draw() {
   for(iter=cellHash.begin(); iter != cellHash.end(); iter++) {
     //if (iter->second.cost == 1) glColor3f(0,1,0);
     //else 
-    if (iter->second.cost == -2) glColor3f(0,0,0.4);
+    if (iter->second.cost == -2) {glColor3f(0,0,0.4);     drawCell(iter->first,0.45);}
+
     else 
-    	if (iter->second.cost < 0 ) glColor3f(1,0,0);
+    	if (iter->second.cost < 0 ) {glColor3f(1,0,0);    drawCell(iter->first,0.45);}
+
     //else 
     //	glColor3f(0,0,1.0-iter->second.cost);
-    drawCell(iter->first,0.45);
   }
 
   glColor3f(1,1,0);
@@ -621,10 +626,10 @@ void Dstar::draw() {
   glColor3f(1,0,1);
   drawCell(s_goal,0.45);
 
-  // for(iter1=openHash.begin(); iter1 != openHash.end(); iter1++) {
+  for(iter1=openHash.begin(); iter1 != openHash.end(); iter1++) {
 
-  //   drawCell(iter1->first, 0.2);
-  // }
+    drawCell(iter1->first, 0.2);
+  }
 
   
   glEnd();

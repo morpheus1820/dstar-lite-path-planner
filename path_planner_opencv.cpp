@@ -24,7 +24,6 @@ int window;
 Dstar *dstar;
 
 int scale = 2; //6
-int inflate = 5;
 int mbutton = 0;
 int mstate = 0;
 
@@ -32,7 +31,6 @@ bool b_autoreplan = true;
 
 Mat streets;
 bool showStreets=false;
-
 
 void InitGL(int Width, int Height)
 {
@@ -134,13 +132,6 @@ void keyPressed(unsigned char key, int x, int y)
   case 'W':
     dstar->getWaypoints();
     break;
-  case '+':
-    inflate++; 
-    break;
-  case '-':
-	inflate--; 
-	break;  
-
   case 'c':
   case 'C':
     dstar->init(40,50,140, 90);
@@ -193,10 +184,10 @@ void loadBuildings(string filename)
   Mat buildings=imread(filename,0);
   threshold( buildings, buildings, 100, 255,0 );
   Mat element = getStructuringElement( MORPH_ELLIPSE,
-                                       Size( inflate,inflate ),
-                                       Point( inflate/2, inflate/2 ) );
+                                       Size( 5,5 ),
+                                       Point( 2, 2 ) );
   /// Apply the dilation operation
-  erode( buildings, buildings, element );
+  //erode( buildings, buildings, element );
   resize(buildings,buildings,Size(800/scale,600/scale));
   flip(buildings,buildings,1);
 
@@ -287,10 +278,7 @@ int main(int argc, char **argv) {
   InitGL(800, 600);
 
   dstar = new Dstar();
-  // x poli
-  //update goal 73 92
-  //update start 325 139
-  dstar->init(325,138,73,92);
+  dstar->init(30,50,120, 90);
   
   if(argc>3){ 
     loadStreets(argv[3]); showStreets=true;}
